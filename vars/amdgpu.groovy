@@ -32,7 +32,7 @@ def onMain() {
 }
 
 def onError(e) {
-    echo 'In Error: ${e}'
+    echo "In Error: ${e}"
 }
 
 def onFinish() {

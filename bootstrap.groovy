@@ -68,7 +68,14 @@ try {
     jobDefinition.onMain()
 }
 catch(e) {
+    echo "----------------------[Error]---------------------------"
+    echo "Fatal: ${e}"
+    echo "----------------------[Trace]---------------------------"
+    echo "${e.getStackTrace()}"
+    echo "-----------------------[Job]----------------------------"
     jobDefinition.onError(e)
+    echo "--------------------------------------------------------"
+    error "Aborting"
 }
 finally {
     jobDefinition.onFinish()
