@@ -36,3 +36,7 @@ def gitCheckout(url, branch, dir) {
 def githubCheckout(user, project, branch, dir) {
     gitCheckout("git@github.com:${user}/${project}.git", branch, dir)
 }
+
+def getNodeThreads() {
+    return sh(returnStdout: true, script: 'nproc').trim()
+}

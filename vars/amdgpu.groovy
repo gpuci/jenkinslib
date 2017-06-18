@@ -21,6 +21,18 @@
  *
  */
 
+def amdgpuCheckout() {
+    gpuci.githubCheckout('gpuci', 'mesa', 'master', 'mesa')
+    gpuci.githubCheckout('gpuci', 'libdrm', 'master', 'libdrm')
+    gpuci.githubCheckout('gpuci', 'jenkinslib', 'master', 'jenkinslib')
+}
+
+def amdgpuBuild() {
+    def makeopts = "-f jenkinslib/amdgpu.mk -j${gpuci.getNodeThreads()} O=build/"
+    sh "make ${makeopts} clean"
+    sh "make ${makeopts} "
+}
+
 def onLoad() {
     echo 'Loaded library: amdgpu.groovy'
 }
@@ -29,8 +41,8 @@ def onMain() {
     echo 'In Main'
     stage('build') {
         node('build') {
-            gpuci.githubCheckout('gpuci', 'mesa', 'master', 'mesa')
-            gpuci.githubCheckout('gpuci', 'libdrm', 'master', 'libdrm')
+            amdgpuCheckout()
+            amdgpuBuild()
         }
     }
 }
