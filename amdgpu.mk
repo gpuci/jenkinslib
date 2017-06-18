@@ -13,13 +13,13 @@ $(O):
 
 libdrm: $(O)
 	mkdir -p $(O)/$@/
-	./autogen.sh --prefix="$(O)/$@/"
-	cd mesa && $(MAKE)
-	cd mesa && $(MAKE) install
+	cd $@ && ./autogen.sh --prefix="$(O)/$@/"
+	cd $@ && $(MAKE)
+	cd $@ && $(MAKE) install
 
 mesa: $(O) libdrm
 	mkdir -p $(O)/$@/
-	./autogen.sh \
+	cd $@ && ./autogen.sh \
 		--prefix="$(O)/$@/" \
 		--enable-dri3 \
 		--enable-debug=yes \
@@ -32,8 +32,8 @@ mesa: $(O) libdrm
 		--with-gallium-drivers=r300,r600,radeonsi \
 		--with-llvm-prefix=/opt/llvm \
 		PKG_CONFIG_PATH=$(O)/$@/libdrm/lib/pkgconfig
-	cd mesa && $(MAKE)
-	cd mesa && $(MAKE) install
+	cd $@ && $(MAKE)
+	cd $@ && $(MAKE) install
 
 # The checkout command should cleaned all the git repos
 # When possible, intermediate build output should also
