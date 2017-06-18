@@ -34,5 +34,5 @@ def gitCheckout(url, branch, dir) {
 }
 
 def githubCheckout(user, project, branch, dir) {
-    gitCheckout("git@github.com:${user}/${name}.git", branch, dir)
+    gitCheckout("git@github.com:${user}/${project}.git", branch, dir)
 }
