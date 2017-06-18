@@ -1,5 +1,4 @@
 O ?= build
-O := $(abspath $(O))
 
 .PHONY: clean all libdrm mesa
 
@@ -13,14 +12,14 @@ $(O):
 
 libdrm: $(O)
 	mkdir -p $(O)/$@/
-	cd $@ && ./autogen.sh --prefix="$(O)/$@/"
+	cd $@ && ./autogen.sh --prefix="$(realpath $(O)/$@/)"
 	cd $@ && $(MAKE)
 	cd $@ && $(MAKE) install
 
 mesa: $(O) libdrm
 	mkdir -p $(O)/$@/
 	cd $@ && ./autogen.sh \
-		--prefix="$(O)/$@/" \
+		--prefix="$(realpath $(O)/$@/)" \
 		--enable-dri3 \
 		--enable-debug=yes \
 		--enable-glx-tls \
