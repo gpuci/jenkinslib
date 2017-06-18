@@ -22,17 +22,19 @@
  */
 
 def onLoad() {
-    gpuci.say 'Loaded library: amdgpu.groovy'
+    echo 'Loaded library: amdgpu.groovy'
 }
 
 def onMain() {
-    gpuci.say 'In Main'
+    echo 'In Main'
+    gpuci.githubCheckout('gpuci', 'mesa', 'master', 'mesa')
+    gpuci.githubCheckout('gpuci', 'libdrm', 'master', 'libdrm')
 }
 
 def onError(e) {
-    gpuci.say 'In Error: ${e}'
+    echo 'In Error: ${e}'
 }
 
 def onFinish() {
-    gpuci.say 'In Finish'
+    echo 'In Finish'
 }

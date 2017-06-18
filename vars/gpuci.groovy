@@ -21,6 +21,18 @@
  *
  */
 
-def say(message) {
-    echo "gpuci say: ${message}"
+def gitCheckout(url, branch, dir) {
+    echo "Checkout url:'${url}' branch:'${branch}' dir:'${dir}'"
+    checkout([$class: 'GitSCM',
+             branches: [[name: branch]],
+             doGenerateSubmoduleConfigurations: false,
+             extensions: [[$class: 'CleanCheckout'],
+             [$class: 'RelativeTargetDirectory', relativeTargetDir: dir]],
+             submoduleCfg: [],
+             userRemoteConfigs: [[credentialsId: '53aea1ee-975f-4a80-9ba1-bdf55f01e2c0',
+             url: url]]])
+}
+
+def githubCheckout(user, project, branch, dir) {
+    gitCheckout("git@github.com:${user}/${name}.git", branch, dir)
 }
