@@ -27,8 +27,12 @@ def onLoad() {
 
 def onMain() {
     echo 'In Main'
-    gpuci.githubCheckout('gpuci', 'mesa', 'master', 'mesa')
-    gpuci.githubCheckout('gpuci', 'libdrm', 'master', 'libdrm')
+    stage('build') {
+        node('build') {
+            gpuci.githubCheckout('gpuci', 'mesa', 'master', 'mesa')
+            gpuci.githubCheckout('gpuci', 'libdrm', 'master', 'libdrm')
+        }
+    }
 }
 
 def onError(e) {
