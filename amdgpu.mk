@@ -12,14 +12,14 @@ $(O):
 
 libdrm: $(O)
 	mkdir -p $(O)/$@/
-	cd $@ && ./autogen.sh --prefix="$(realpath $(O)/$@/)"
+	cd $@ && ./autogen.sh --prefix="$(abspath $(O)/$@/)"
 	cd $@ && $(MAKE)
 	cd $@ && $(MAKE) install
 
 mesa: $(O) libdrm
 	mkdir -p $(O)/$@/
 	cd $@ && ./autogen.sh \
-		--prefix="$(realpath $(O)/$@/)" \
+		--prefix="$(abspath $(O)/$@/)" \
 		--enable-dri3 \
 		--enable-debug=yes \
 		--enable-glx-tls \
