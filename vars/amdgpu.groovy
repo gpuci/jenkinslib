@@ -1,17 +1,17 @@
 // vars/amdgpu.groovy
 
 def onLoad() {
-    echo 'Loaded library: amdgpu.groovy'
+    gpuci.say 'Loaded library: amdgpu.groovy'
 }
 
 def onMain() {
-    echo 'In Main'
+    gpuci.say 'In Main'
 }
 
 def onError(e) {
-    echo 'In Error: ${e}'
+    gpuci.say 'In Error: ${e}'
 }
 
 def onFinish() {
-    echo 'In Finish'
+    gpuci.say 'In Finish'
 }
