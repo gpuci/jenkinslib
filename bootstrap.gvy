@@ -3,7 +3,9 @@ pipeline {
 
     stages {
         stage('bootstrap') {
-            echo 'Hello world'
+            steps {
+                echo 'Hello world'
+            }
         }
     }
 }
