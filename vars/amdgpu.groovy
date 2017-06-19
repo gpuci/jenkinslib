@@ -25,6 +25,7 @@ def amdgpuCheckout() {
     gpuci.githubCheckout('gpuci', 'mesa', 'master', 'mesa')
     gpuci.githubCheckout('gpuci', 'libdrm', 'master', 'libdrm')
     gpuci.githubCheckout('gpuci', 'jenkinslib', 'master', 'jenkinslib')
+    gpuci.githubCheckout('gpuci', 'llvm', 'stable', 'llvm')
 }
 
 def amdgpuBuild() {
