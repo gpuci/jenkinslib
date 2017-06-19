@@ -29,6 +29,9 @@ llvm: $(O)
 	cd $(O)/$(BUILD_SUBDIR)/$@/ && $(MAKE)
 	cd $(O)/$(BUILD_SUBDIR)/$@/ && $(MAKE) install
 
+# TODO: make install in mesa needs to be replaced with something else
+# since autotools will relink against the system libraries, e.g. libdrm
+# during install (and probably fail in the process).
 mesa: $(O) libdrm llvm
 	mkdir -p $(O)/$@/
 	cd $@ && ./autogen.sh \
