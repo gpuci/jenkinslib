@@ -21,29 +21,26 @@
  *
  */
 
-def gitCheckout(url, branch, dir) {
-    echo "Checkout url:'${url}' branch:'${branch}' dir:'${dir}'"
-    checkout([$class: 'GitSCM',
-             branches: [[name: branch]],
-             doGenerateSubmoduleConfigurations: false,
-             extensions: [[$class: 'CleanCheckout'],
-             [$class: 'RelativeTargetDirectory', relativeTargetDir: dir]],
-             submoduleCfg: [],
-             userRemoteConfigs: [[credentialsId: '53aea1ee-975f-4a80-9ba1-bdf55f01e2c0',
-             url: url]]])
+def onLoad() {
+    echo 'Loaded library: mirrors.groovy'
 }
 
-def githubCheckout(user, project, branch, dir) {
-    gitCheckout("git@github.com:${user}/${project}.git", branch, dir)
+def onMain() {
+    stage('build') {
+        node('build') {
+            gpuci.updateMirror("llvm-git", "git@github.com:llvm-mirror/llvm.git", "master",
+                               "llvm", "git@github.com:gpuci/llvm.git", "master")
+            gpuci.updateMirror("libdrm-fdo", "git://anongit.freedesktop.org/mesa/drm", "master",
+                               "libdrm", "git@github.com:gpuci/libdrm.git", "master")
+            gpuci.updateMirror("mesa-fdo", "git://anongit.freedesktop.org/git/mesa/mesa", "master",
+                               "mesa", "git@github.com:gpuci/mesa.git", "master")
+        }
+    }
 }
 
-def getNodeThreads() {
-    return sh(returnStdout: true, script: 'nproc').trim()
+def onError(e) {
+    echo "Error: ${e}"
 }
 
-def updateMirror(srcName, srcUrl, srcBranch, dstName, dstUrl, dstBranch) {
-    gitCheckout(dstUrl, dstBranch, dstName)
-    sh "cd ${srcName} && git remote add ${srcName} ${srcUrl}|| true"
-    sh "cd ${srcName} && git fetch --all"
-    sh "cd ${srcName} && git push origin ${srcName}/${srcBranch}:refs/heads/${dstBranch}"
+def onFinish() {
 }

@@ -57,6 +57,10 @@ stage('bootstrap') {
             library identifier: 'amdgpu@master', retriever: jenkinslibScm
             jobDefinition = amdgpu
             break
+        case 'git-mirrors':
+            library identifier: 'mirrors@master', retriever: jenkinslibScm
+            jobDefinition = mirrors
+            break
         default:
             error "Failed to identify project"
     }
