@@ -1,4 +1,6 @@
 O ?= build
+BUILD_SUBDIR ?= build
+ROOT = $(PWD)
 
 .PHONY: clean all libdrm mesa
 
@@ -16,7 +18,17 @@ libdrm: $(O)
 	cd $@ && $(MAKE)
 	cd $@ && $(MAKE) install
 
-mesa: $(O) libdrm
+llvm:
+	mkdir -p $(O)/$(BUILD_SUBDIR)/$@/
+	mkdir -p $(O)/$@/
+	cd $(O)/$(BUILD_SUBDIR)/$@/ && cmake $(ROOT)/$@ \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DLLVM_LINK_LLVM_DYLIB=true \
+		-DCMAKE_INSTALL_PREFIX="$(abspath $(O)/$@/)"
+	cd $(O)/$(BUILD_SUBDIR)/$@/ && $(MAKE)
+	cd $(O)/$(BUILD_SUBDIR)/$@/ && $(MAKE) install
+
+mesa: $(O) libdrm llvm
 	mkdir -p $(O)/$@/
 	cd $@ && ./autogen.sh \
 		--prefix="$(abspath $(O)/$@/)" \
@@ -29,8 +41,8 @@ mesa: $(O) libdrm
 		--with-icd-dir=/etc/vulkan/icd.d \
 		--with-dri-drivers=radeon,i965 \
 		--with-gallium-drivers=r300,r600,radeonsi \
-		--with-llvm-prefix=/opt/llvm \
-		PKG_CONFIG_PATH=$(O)/$@/libdrm/lib/pkgconfig
+		--with-llvm-prefix="$(O)/llvm" \
+		PKG_CONFIG_PATH="$(O)/$@/libdrm/lib/pkgconfig"
 	cd $@ && $(MAKE)
 	cd $@ && $(MAKE) install
 
