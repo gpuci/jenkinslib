@@ -41,8 +41,8 @@ mesa: $(O) libdrm llvm
 		--with-icd-dir=/etc/vulkan/icd.d \
 		--with-dri-drivers=radeon,i965 \
 		--with-gallium-drivers=r300,r600,radeonsi \
-		--with-llvm-prefix="$(O)/llvm" \
-		PKG_CONFIG_PATH="$(O)/$@/libdrm/lib/pkgconfig"
+		--with-llvm-prefix="$(abspath $(O)/llvm)" \
+		PKG_CONFIG_PATH="$(abspath $(O)/libdrm/lib/pkgconfig/)"
 	cd $@ && $(MAKE)
 	cd $@ && $(MAKE) install
 
