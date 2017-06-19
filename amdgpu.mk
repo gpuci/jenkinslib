@@ -18,7 +18,7 @@ libdrm: $(O)
 	cd $@ && $(MAKE)
 	cd $@ && $(MAKE) install
 
-llvm:
+llvm: $(O)
 	mkdir -p $(O)/$(BUILD_SUBDIR)/$@/
 	mkdir -p $(O)/$@/
 	cd $(O)/$(BUILD_SUBDIR)/$@/ && cmake $(ROOT)/$@ \
