@@ -43,7 +43,7 @@ def getNodeThreads() {
 
 def updateMirror(srcName, srcUrl, srcBranch, dstName, dstUrl, dstBranch) {
     gitCheckout(dstUrl, dstBranch, dstName)
-    sh "cd ${srcName} && git remote add ${srcName} ${srcUrl}|| true"
-    sh "cd ${srcName} && git fetch --all"
-    sh "cd ${srcName} && git push origin ${srcName}/${srcBranch}:refs/heads/${dstBranch}"
+    sh "cd ${dstName} && git remote add ${srcName} ${srcUrl}|| true"
+    sh "cd ${dstName} && git fetch --all"
+    sh "cd ${dstName} && git push origin ${srcName}/${srcBranch}:refs/heads/${dstBranch}"
 }
