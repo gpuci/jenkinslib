@@ -24,6 +24,7 @@ llvm: $(O)
 	cd $(O)/$(BUILD_SUBDIR)/$@/ && cmake $(ROOT)/$@ \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DLLVM_LINK_LLVM_DYLIB=true \
+		-DLLVM_CCACHE_BUILD=true \
 		-DCMAKE_INSTALL_PREFIX="$(abspath $(O)/$@/)"
 	cd $(O)/$(BUILD_SUBDIR)/$@/ && $(MAKE)
 	cd $(O)/$(BUILD_SUBDIR)/$@/ && $(MAKE) install
