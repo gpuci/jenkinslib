@@ -28,10 +28,15 @@ def amdgpuCheckout() {
     gpuci.githubCheckout('gpuci', 'llvm', 'master', 'llvm')
 }
 
-def amdgpuBuild() {
-    def makeopts = "-f jenkinslib/amdgpu.mk -j${gpuci.getNodeThreads()} O=build/"
+def amdgpuBuild(dir) {
+    def makeopts = "-f jenkinslib/amdgpu.mk -j${gpuci.getNodeThreads()} O=${dir}"
     sh "make ${makeopts} clean"
     sh "make ${makeopts} "
+}
+
+def amdgpuArchive(dir) {
+    sh "tar --exclude='${dir}/build' -cjf ${dir}.tar.bz2 ${dir}"
+    archive "${dir}.tar.bz2"
 }
 
 def onLoad() {
@@ -42,8 +47,10 @@ def onMain() {
     echo 'In Main'
     stage('build') {
         node('build') {
+            def buildDir = "${env.JOB_BASE_NAME}-${env.BUILD_NUMBER}"
             amdgpuCheckout()
-            amdgpuBuild()
+            amdgpuBuild(buildDir)
+            amdgpuArchive(buildDir)
         }
     }
 }
