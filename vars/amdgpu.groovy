@@ -35,8 +35,15 @@ def amdgpuBuild(dir) {
 }
 
 def amdgpuArchive(dir) {
-    sh "tar --exclude='${dir}/build' -cjf ${dir}.tar.bz2 ${dir}"
-    archive "${dir}.tar.bz2"
+    def archiveDir = gpuci.dirname(dir)
+    def archiveName = gpuci.basename(dir)
+    def nodeRoot = pwd()
+
+    sh ("cd ${archiveDir} && tar -cjf" + \
+        " --exclude='${archiveName}/build'" + \
+        " ${nodeRoot}/${archiveName}.tar.bz2" + \
+        " ${archiveName}")
+    archive "${nodeRoot}/${archiveName}.tar.bz2"
 }
 
 def onLoad() {

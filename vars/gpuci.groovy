@@ -47,3 +47,11 @@ def updateMirror(srcName, srcUrl, srcBranch, dstName, dstUrl, dstBranch) {
     sh "cd ${dstName} && git fetch --all"
     sh "cd ${dstName} && git push origin ${srcName}/${srcBranch}:refs/heads/${dstBranch}"
 }
+
+def basename(path) {
+    return sh(returnStdout: true, script: 'basename $(path)').trim()
+}
+
+def dirname(path) {
+    return sh(returnStdout: true, script: 'dirname $(path)').trim()
+}
