@@ -22,7 +22,6 @@
  */
 
 def dumpGithubPayload() {
-    properties ( [[$class: 'ParametersDefinitionProperty', parameterDefinitions: [[$class: 'StringParameterDefinition', defaultValue: '', description: '', name: 'payload']]]] )
     echo "-------------------------------------------------"
     echo ("This build is built with the payload: $payload")
     echo "-------------------------------------------------"
