@@ -49,9 +49,9 @@ def updateMirror(srcName, srcUrl, srcBranch, dstName, dstUrl, dstBranch) {
 }
 
 def basename(path) {
-    return sh(returnStdout: true, script: 'basename $(path)').trim()
+    return sh(returnStdout: true, script: 'basename ${path}').trim()
 }
 
 def dirname(path) {
-    return sh(returnStdout: true, script: 'dirname $(path)').trim()
+    return sh(returnStdout: true, script: 'dirname ${path}').trim()
 }
