@@ -55,7 +55,8 @@ def onMain() {
     stage('build') {
         node('build') {
             def buildDir = "build/${env.JOB_BASE_NAME}-${env.BUILD_NUMBER}"
-            sh 'rm -rf build/'
+            sh "rm -rf build/"
+            sh "rm -f ${env.JOB_BASE_NAME}-*"
 
             amdgpuCheckout()
             amdgpuBuild(buildDir)
