@@ -61,6 +61,10 @@ stage('bootstrap') {
             library identifier: 'mirrors@master', retriever: jenkinslibScm
             jobDefinition = mirrors
             break
+        case 'test-pipeline':
+            library identifier: 'test-pipeline@master', retriever: jenkinslibScm
+            jobDefinition = test-pipeline
+            break
         default:
             error "Failed to identify project"
     }
