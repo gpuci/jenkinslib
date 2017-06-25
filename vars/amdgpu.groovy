@@ -24,6 +24,13 @@
 def amdgpuCheckout() {
     gpuci.githubCheckout('gpuci', 'mesa', 'master', 'mesa')
     gpuci.githubCheckout('gpuci', 'libdrm', 'master', 'libdrm')
+
+    if (env.JOB_NAME.contains("-dev")) {
+        gpuci.githubCheckout('gpuci', 'jenkinslib', 'dev', 'jenkinslib')
+    } else {
+        gpuci.githubCheckout('gpuci', 'jenkinslib', 'master', 'jenkinslib')
+    }
+
     gpuci.githubCheckout('gpuci', 'jenkinslib', 'master', 'jenkinslib')
     gpuci.githubCheckout('gpuci', 'llvm', 'master', 'llvm')
 }

@@ -53,7 +53,7 @@ stage('bootstrap') {
      * If required, this could be moved to a job parameter instead
      */
     switch("${JOB_NAME}") {
-        case 'amdgpu-master':
+        case ~/^amdgpu-.*/:
             library identifier: 'amdgpu@master', retriever: jenkinslibScm
             jobDefinition = amdgpu
             break
