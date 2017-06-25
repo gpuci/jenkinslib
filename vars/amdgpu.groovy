@@ -43,7 +43,8 @@ def amdgpuArchive(dir) {
         " --exclude='${archiveName}/build'" + \
         " -f ${nodeRoot}/${archiveName}.tar.bz2" + \
         " ${archiveName}")
-    archive "${nodeRoot}/${archiveName}.tar.bz2"
+
+    archiveArtifacts "**/${archiveName}.tar.bz2"
 }
 
 def onLoad() {
