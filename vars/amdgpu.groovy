@@ -25,7 +25,7 @@ def amdgpuCheckout() {
     gpuci.githubCheckout('gpuci', 'mesa', 'master', 'mesa')
     gpuci.githubCheckout('gpuci', 'libdrm', 'master', 'libdrm')
 
-    if (env.JOB_NAME.contains("-dev")) {
+    if (gpuci.inDevEnv()) {
         gpuci.githubCheckout('gpuci', 'jenkinslib', 'dev', 'jenkinslib')
     } else {
         gpuci.githubCheckout('gpuci', 'jenkinslib', 'master', 'jenkinslib')
@@ -54,6 +54,29 @@ def amdgpuArchive(dir) {
     archiveArtifacts "**/${archiveName}.tar.bz2"
 }
 
+def buildStage() {
+    if (gpuci.inDevEnv()) {
+        echo "Skipping build in dev env"
+        return
+    }
+
+    node('build') {
+        def buildDir = "build/${env.JOB_BASE_NAME}-${env.BUILD_NUMBER}"
+        sh "rm -rf build/"
+        sh "rm -f ${env.JOB_BASE_NAME}-*"
+
+        amdgpuCheckout()
+        amdgpuBuild(buildDir)
+        amdgpuArchive(buildDir)
+    }
+}
+
+def testStage() {
+    node ('kv') {
+        echo "hello from kv"
+    }
+}
+
 def onLoad() {
     echo 'Loaded library: amdgpu.groovy'
 }
@@ -61,15 +84,11 @@ def onLoad() {
 def onMain() {
     echo 'In Main'
     stage('build') {
-        node('build') {
-            def buildDir = "build/${env.JOB_BASE_NAME}-${env.BUILD_NUMBER}"
-            sh "rm -rf build/"
-            sh "rm -f ${env.JOB_BASE_NAME}-*"
+        buildStage()
+    }
 
-            amdgpuCheckout()
-            amdgpuBuild(buildDir)
-            amdgpuArchive(buildDir)
-        }
+    stage('test') {
+        testStage()
     }
 }
 

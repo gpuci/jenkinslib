@@ -21,6 +21,10 @@
  *
  */
 
+def inDevEnv() {
+    return env.JOB_NAME.contains("-dev")
+}
+
 def gitCheckout(url, branch, dir) {
     echo "Checkout url:'${url}' branch:'${branch}' dir:'${dir}'"
     checkout([$class: 'GitSCM',
