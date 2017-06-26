@@ -45,7 +45,7 @@ def amdgpuBuild(dir) {
 
 def amdgpuArchive(dir) {
     def archiveDir = gpuci.dirname(dir)
-    def amdgpu.tarArchive = gpuci.basename(dir)
+    amdgpu.tarArchive = gpuci.basename(dir)
     def nodeRoot = pwd()
 
     sh ("cd ${archiveDir} && tar -cj" + \
