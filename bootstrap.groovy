@@ -46,7 +46,7 @@ stage('bootstrap') {
     /**
      * Main shared library for all gpuci jobs. This is where common code should go.
      */
-    library identifier: 'gpuci@master', retriever: jenkinslibScm
+    library identifier: "gpuci@${libBranch}", retriever: jenkinslibScm
 
     /**
      * Load the appropriate job definition based on job name
