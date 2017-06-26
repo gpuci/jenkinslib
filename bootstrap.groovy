@@ -37,6 +37,7 @@ stage('bootstrap') {
     /**
      * gpuci/jenkinslib on github
      */
+    def libBranch = env.JOB_NAME.contains("-dev") ? "dev" : "master"
     def jenkinslibScm = modernSCM(github(checkoutCredentialsId: '53aea1ee-975f-4a80-9ba1-bdf55f01e2c0',
                                          id: 'a6ad71fe-f669-4dcc-852d-0e3ce3734a78',
                                          repoOwner: 'gpuci',
@@ -54,15 +55,15 @@ stage('bootstrap') {
      */
     switch("${JOB_NAME}") {
         case ~/^amdgpu-.*/:
-            library identifier: 'amdgpu@master', retriever: jenkinslibScm
+            library identifier: "amdgpu@${libBranch}", retriever: jenkinslibScm
             jobDefinition = amdgpu
             break
         case 'git-mirrors':
-            library identifier: 'mirrors@master', retriever: jenkinslibScm
+            library identifier: "mirrors@${libBranch}", retriever: jenkinslibScm
             jobDefinition = mirrors
             break
         case 'test-pipeline':
-            library identifier: 'testpipeline@master', retriever: jenkinslibScm
+            library identifier: "testpipeline@${libBranch}", retriever: jenkinslibScm
             jobDefinition = testpipeline
             break
         default:
