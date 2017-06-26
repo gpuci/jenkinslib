@@ -21,6 +21,8 @@
  *
  */
 
+String tarArchive;
+
 def amdgpuCheckout() {
     gpuci.githubCheckout('gpuci', 'mesa', 'master', 'mesa')
     gpuci.githubCheckout('gpuci', 'libdrm', 'master', 'libdrm')
@@ -43,23 +45,18 @@ def amdgpuBuild(dir) {
 
 def amdgpuArchive(dir) {
     def archiveDir = gpuci.dirname(dir)
-    def archiveName = gpuci.basename(dir)
+    def amdgpu.tarArchive = gpuci.basename(dir)
     def nodeRoot = pwd()
 
     sh ("cd ${archiveDir} && tar -cj" + \
-        " --exclude='${archiveName}/build'" + \
-        " -f ${nodeRoot}/${archiveName}.tar.bz2" + \
-        " ${archiveName}")
+        " --exclude='${amdgpu.tarArchive}/build'" + \
+        " -f ${nodeRoot}/${amdgpu.tarArchive}.tar.bz2" + \
+        " ${amdgpu.tarArchive}")
 
-    archiveArtifacts "**/${archiveName}.tar.bz2"
+    archiveArtifacts "**/${amdgpu.tarArchive}.tar.bz2"
 }
 
 def buildStage() {
-    if (gpuci.inDevEnv()) {
-        echo "Skipping build in dev env"
-        return
-    }
-
     node('build') {
         def buildDir = "build/${env.JOB_BASE_NAME}-${env.BUILD_NUMBER}"
         sh "rm -rf build/"
@@ -73,7 +70,9 @@ def buildStage() {
 
 def testStage() {
     node ('kv') {
-        echo "hello from kv"
+        unarchive mapping: ["${amdgpu.tarArchive}.tar.bz2": "${amdgpu.tarArchive}.tar.bz2.tar.bz2"]
+        sh "tar xjf ${amdgpu.tarArchive}"
+        sh "find ."
     }
 }
 
