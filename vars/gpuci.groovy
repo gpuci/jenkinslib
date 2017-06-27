@@ -45,7 +45,7 @@ def updateMirror(srcName, srcUrl, srcBranch, dstName, dstUrl, dstBranch) {
     gitCheckout(dstUrl, dstBranch, dstName)
     sh "cd ${dstName} && git remote add ${srcName} ${srcUrl}|| true"
     sh "cd ${dstName} && git fetch --all"
-    sh "cd ${dstName} && git push origin ${srcName}/${srcBranch}:refs/heads/${dstBranch}"
+    sh "cd ${dstName} && git push origin ${srcName}/${srcBranch}:refs/heads/${dstBranch} -f"
 }
 
 def basename(path) {
